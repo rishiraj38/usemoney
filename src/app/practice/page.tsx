@@ -17,20 +17,9 @@ import {
 export default function PracticePage() {
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
-      {/* Background */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(52,211,153,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.03) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          opacity: 0.2,
-        }}
-      />
-
-      <div className="section-container" style={{ position: "relative", zIndex: 10, paddingTop: 32, paddingBottom: 48 }}>
-        {/* Page Header */}
+      <div style={{ position: "relative", zIndex: 10, maxWidth: 1440, margin: "0 auto", padding: "40px 32px 64px" }}>
+        
+        {/* ─── Page Header ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,111 +28,110 @@ export default function PracticePage() {
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            marginBottom: 32,
-            gap: 16,
+            marginBottom: 48,
+            gap: 20,
           }}
         >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 12,
-                  background: "linear-gradient(135deg, #34d399, #059669)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <LineChart size={20} style={{ color: "#fff" }} />
-              </div>
-              <h1
-                style={{
-                  fontSize: "clamp(22px, 3vw, 30px)",
-                  fontWeight: 700,
-                  color: "#fff",
-                  fontFamily: "var(--font-display)",
-                }}
-              >
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 14,
+                background: "linear-gradient(135deg, #34d399, #059669)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 20px rgba(16,185,129,0.3)",
+              }}
+            >
+              <LineChart size={24} style={{ color: "#fff" }} />
+            </div>
+            <div>
+              <h1 style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>
                 Practice Trading
               </h1>
+              <p style={{ fontSize: 14, color: "#64748b", marginTop: 2 }}>
+                Paper-trade with live market data · Zero risk · AI-powered insights
+              </p>
             </div>
-            <p style={{ fontSize: 14, color: "#64748b", marginLeft: 52 }}>
-              Paper-trade with live market data · Zero risk · AI-powered insights
-            </p>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <div
-              className="glass"
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
-                padding: "10px 18px",
-                borderRadius: 14,
+                gap: 10,
+                padding: "12px 20px",
+                borderRadius: 16,
                 fontSize: 14,
+                background: "rgba(15,23,42,0.8)",
+                border: "1px solid #1f2937",
+                backdropFilter: "blur(12px)",
               }}
             >
-              <Wallet size={16} style={{ color: "#34d399" }} />
+              <Wallet size={18} style={{ color: "#34d399" }} />
               <span style={{ color: "#94a3b8" }}>Balance:</span>
-              <span style={{ color: "#fff", fontWeight: 600, fontFamily: "var(--font-mono)" }}>₹10,87,430</span>
+              <span style={{ color: "#fff", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: 16 }}>₹10,87,430</span>
             </div>
             <TradeForm />
           </div>
         </motion.div>
 
-        {/* Stats Grid */}
-        <div style={{ marginBottom: 32 }}>
+        {/* ─── Stats Grid ─── */}
+        <div style={{ marginBottom: 48 }}>
           <StatsGrid stats={mockPortfolioStats} />
         </div>
 
-        {/* Chart + Notifications */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr",
-            gap: 24,
-            marginBottom: 32,
-          }}
-        >
+        {/* ─── Performance Chart (full width) ─── */}
+        <div style={{ marginBottom: 32 }}>
           <PerformanceChart data={mockPerformanceData} />
+        </div>
+
+        {/* ─── Notifications (full width) ─── */}
+        <div style={{ marginBottom: 48 }}>
           <NotificationPanel notifications={mockNotifications} />
         </div>
 
-        {/* Trades Table */}
-        <div style={{ marginBottom: 32 }}>
+        {/* ─── Trades Table ─── */}
+        <div style={{ marginBottom: 48 }}>
           <TradesTable trades={mockTrades} />
         </div>
 
-        {/* AI Insight Card */}
+        {/* ─── AI Insight Card ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-brand"
-          style={{ borderRadius: 20, padding: 24 }}
+          style={{
+            borderRadius: 20,
+            padding: 28,
+            background: "rgba(16,185,129,0.06)",
+            border: "1px solid rgba(16,185,129,0.15)",
+            backdropFilter: "blur(12px)",
+          }}
         >
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 18 }}>
             <div
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 44,
+                height: 44,
+                borderRadius: 14,
                 background: "rgba(16,185,129,0.2)",
+                border: "1px solid rgba(16,185,129,0.3)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
               }}
             >
-              <Sparkles size={20} style={{ color: "#34d399" }} />
+              <Sparkles size={22} style={{ color: "#34d399" }} />
             </div>
             <div>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: "#34d399", marginBottom: 6 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#34d399", marginBottom: 8 }}>
                 ✨ StockSage AI Analysis
               </h3>
-              <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.7 }}>
+              <p style={{ fontSize: 15, color: "#cbd5e1", lineHeight: 1.8 }}>
                 Your practice portfolio shows strong momentum with a 68% win rate.
                 Your best performing sector is Banking (+4.8%), while IT positions
                 need attention. Consider adding a stop loss to your ITC position

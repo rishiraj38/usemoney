@@ -235,8 +235,74 @@ a { color: inherit; text-decoration: none; }
 .animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
 .animate-fade-up { animation: fade-up 0.5s ease-out forwards; }
 
+/* ── Glass / Glassmorphism ── */
+.glass {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #1f2937;
+  backdrop-filter: blur(12px);
+}
+
+.glass-brand {
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+/* ── Section Container ── */
+.section-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── Hover Card ── */
+.hover-card {
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.hover-card:hover {
+  border-color: #2a3544;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── Navy BG ── */
+.bg-navy-800\/50 { background: rgba(15, 23, 42, 0.5); }
+
+/* ── Accent ── */
+.text-accent-400 { color: #60a5fa; }
+.bg-accent-500\/5 { background: rgba(59, 130, 246, 0.05); }
+.bg-accent-500\/10 { background: rgba(59, 130, 246, 0.1); }
+.border-accent-500\/10 { border-color: rgba(59, 130, 246, 0.1); }
+
+.text-brand-400 { color: #34d399; }
+.text-brand-500 { color: #10b981; }
+.bg-brand-500\/10 { background: rgba(16, 185, 129, 0.1); }
+.bg-brand-500\/20 { background: rgba(16, 185, 129, 0.2); }
+.border-brand-500\/30 { border-color: rgba(16, 185, 129, 0.3); }
+
 /* ── Selection ── */
 ::selection {
   background: rgba(16, 185, 129, 0.3);
   color: #fff;
+}
+
+/* ── Responsive Grid Overrides ── */
+@media (min-width: 1024px) {
+  .lg\:\!grid-cols-\[3fr_2fr\] {
+    grid-template-columns: 3fr 2fr !important;
+  }
+  .max-lg\:\!grid-cols-3 {
+    /* does not apply at lg+ */
+  }
+}
+@media (max-width: 1023px) {
+  .max-lg\:\!grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+@media (max-width: 639px) {
+  .max-sm\:\!grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }

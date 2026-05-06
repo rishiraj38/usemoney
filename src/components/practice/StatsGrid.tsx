@@ -104,9 +104,10 @@ export default function StatsGrid({ stats }: StatsGridProps) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-        gap: 16,
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: 18,
       }}
+      className="max-sm:!grid-cols-2 max-lg:!grid-cols-3"
     >
       {cards.map((card, i) => (
         <motion.div
@@ -114,18 +115,25 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: i * 0.05 }}
-          className="glass hover-card"
-          style={{ borderRadius: 16, padding: 20 }}
+          style={{
+            borderRadius: 18,
+            padding: 22,
+            background: "rgba(15,23,42,0.6)",
+            border: "1px solid #1f2937",
+            backdropFilter: "blur(12px)",
+            transition: "border-color 0.2s, box-shadow 0.2s",
+          }}
+          className="hover:!border-[#2a3544] hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+            <span style={{ fontSize: 12, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>
               {card.label}
             </span>
             <div
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: 10,
+                width: 36,
+                height: 36,
+                borderRadius: 12,
                 background: card.bgColor,
                 border: `1px solid ${card.borderColor}`,
                 display: "flex",
@@ -133,13 +141,13 @@ export default function StatsGrid({ stats }: StatsGridProps) {
                 justifyContent: "center",
               }}
             >
-              <card.icon size={16} style={{ color: card.color }} />
+              <card.icon size={18} style={{ color: card.color }} />
             </div>
           </div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: card.color, marginBottom: 2 }}>
+          <div style={{ fontSize: 26, fontWeight: 800, color: card.color, marginBottom: 4, letterSpacing: "-0.02em" }}>
             {card.value}
           </div>
-          <div style={{ fontSize: 12, color: "#64748b" }}>{card.subValue}</div>
+          <div style={{ fontSize: 13, color: "#64748b" }}>{card.subValue}</div>
         </motion.div>
       ))}
     </div>

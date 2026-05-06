@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Personal interview prep - do not push
+docs/INTERVIEW_PREP.md

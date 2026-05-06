@@ -6,7 +6,6 @@ import {
   Bell,
   BellOff,
   Check,
-  Trash2,
   Target,
   AlertTriangle,
   TrendingUp,
@@ -30,18 +29,32 @@ const iconMap: Record<string, React.ElementType> = {
   ACHIEVEMENT: Trophy,
 };
 
-const severityColors: Record<string, string> = {
-  info: "border-l-accent-400 bg-accent-500/5",
-  success: "border-l-green-400 bg-green-500/5",
-  warning: "border-l-amber-400 bg-amber-500/5",
-  error: "border-l-red-400 bg-red-500/5",
+const severityBg: Record<string, string> = {
+  info: "rgba(59,130,246,0.08)",
+  success: "rgba(34,197,94,0.08)",
+  warning: "rgba(251,191,36,0.08)",
+  error: "rgba(239,68,68,0.08)",
 };
 
-const severityIconColors: Record<string, string> = {
-  info: "text-accent-400 bg-accent-500/10",
-  success: "text-green-400 bg-green-500/10",
-  warning: "text-amber-400 bg-amber-500/10",
-  error: "text-red-400 bg-red-500/10",
+const severityBorder: Record<string, string> = {
+  info: "rgba(59,130,246,0.2)",
+  success: "rgba(34,197,94,0.2)",
+  warning: "rgba(251,191,36,0.2)",
+  error: "rgba(239,68,68,0.2)",
+};
+
+const severityIconBg: Record<string, string> = {
+  info: "rgba(59,130,246,0.15)",
+  success: "rgba(34,197,94,0.15)",
+  warning: "rgba(251,191,36,0.15)",
+  error: "rgba(239,68,68,0.15)",
+};
+
+const severityIconColor: Record<string, string> = {
+  info: "#60a5fa",
+  success: "#34d399",
+  warning: "#fbbf24",
+  error: "#f87171",
 };
 
 function timeAgo(dateStr: string): string {
@@ -84,33 +97,65 @@ export default function NotificationPanel({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="glass rounded-2xl overflow-hidden"
+      style={{
+        borderRadius: 20,
+        overflow: "hidden",
+        background: "rgba(15,23,42,0.6)",
+        border: "1px solid #1f2937",
+        backdropFilter: "blur(12px)",
+      }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-5 border-b border-white/5">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Bell size={20} className="text-brand-400" />
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "20px 24px",
+        borderBottom: "1px solid rgba(255,255,255,0.05)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ position: "relative" }}>
+            <Bell size={22} style={{ color: "#34d399" }} />
             {unreadCount > 0 && (
-              <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white">
+              <div style={{
+                position: "absolute",
+                top: -6,
+                right: -6,
+                width: 18,
+                height: 18,
+                background: "#ef4444",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#fff" }}>
                   {unreadCount}
                 </span>
               </div>
             )}
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">Notifications</h3>
-            <p className="text-xs text-slate-500">
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Notifications</h3>
+            <p style={{ fontSize: 13, color: "#64748b" }}>
               {unreadCount} unread alert{unreadCount !== 1 ? "s" : ""}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
-              className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-brand-400 transition-colors cursor-pointer"
+              style={{
+                padding: 8,
+                borderRadius: 10,
+                background: "transparent",
+                border: "none",
+                color: "#94a3b8",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+              }}
               title="Mark all as read"
             >
               <CheckCheck size={18} />
@@ -118,7 +163,16 @@ export default function NotificationPanel({
           )}
           <button
             onClick={() => setSettingsOpen(!settingsOpen)}
-            className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            style={{
+              padding: 8,
+              borderRadius: 10,
+              background: "transparent",
+              border: "none",
+              color: "#94a3b8",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+            }}
             title="Notification settings"
           >
             <Settings size={18} />
@@ -127,24 +181,37 @@ export default function NotificationPanel({
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1 px-5 pt-3 pb-2">
+      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 24px 8px" }}>
         {(["ALL", "UNREAD"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer ${
-              filter === f
-                ? "bg-brand-500/20 text-brand-400"
-                : "text-slate-400 hover:text-white"
-            }`}
+            style={{
+              padding: "6px 14px",
+              fontSize: 13,
+              fontWeight: 600,
+              borderRadius: 8,
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.15s",
+              background: filter === f ? "rgba(16,185,129,0.15)" : "transparent",
+              color: filter === f ? "#34d399" : "#94a3b8",
+            }}
           >
             {f === "ALL" ? "All" : `Unread (${unreadCount})`}
           </button>
         ))}
       </div>
 
-      {/* Notification List */}
-      <div className="max-h-[480px] overflow-y-auto">
+      {/* Notification Grid — horizontal card layout */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
+        gap: 12,
+        padding: "12px 20px 20px",
+        maxHeight: 480,
+        overflowY: "auto",
+      }}>
         <AnimatePresence mode="popLayout">
           {filtered.map((notification) => {
             const Icon = iconMap[notification.type] || Info;
@@ -155,45 +222,66 @@ export default function NotificationPanel({
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20, height: 0 }}
-                className={`relative border-l-2 mx-3 my-2 rounded-xl p-4 transition-all ${
-                  severityColors[notification.severity]
-                } ${!notification.read ? "" : "opacity-60"}`}
+                style={{
+                  position: "relative",
+                  borderRadius: 16,
+                  padding: "16px 20px",
+                  background: severityBg[notification.severity],
+                  border: `1px solid ${severityBorder[notification.severity]}`,
+                  opacity: notification.read ? 0.6 : 1,
+                  transition: "all 0.2s",
+                }}
               >
-                <div className="flex items-start gap-3">
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
                   <div
-                    className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                      severityIconColors[notification.severity]
-                    }`}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      background: severityIconBg[notification.severity],
+                    }}
                   >
-                    <Icon size={18} />
+                    <Icon size={20} style={{ color: severityIconColor[notification.severity] }} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <h4
-                        className={`text-sm font-semibold ${
-                          !notification.read ? "text-white" : "text-slate-300"
-                        }`}
-                      >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                      <h4 style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: notification.read ? "#94a3b8" : "#fff",
+                      }}>
                         {notification.title}
                       </h4>
-                      <div className="flex items-center gap-1 flex-shrink-0">
+                      <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
                         {!notification.read && (
-                          <div className="w-2 h-2 rounded-full bg-brand-400" />
+                          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#34d399" }} />
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed mt-1">
+                    <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.5, marginTop: 4 }}>
                       {notification.message}
                     </p>
-                    <div className="flex items-center justify-between mt-3">
-                      <span className="text-[11px] text-slate-600">
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
+                      <span style={{ fontSize: 11, color: "#475569" }}>
                         {timeAgo(notification.timestamp)}
                       </span>
-                      <div className="flex items-center gap-1">
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                         {!notification.read && (
                           <button
                             onClick={() => markRead(notification.id)}
-                            className="p-1 rounded hover:bg-white/5 text-slate-500 hover:text-brand-400 cursor-pointer"
+                            style={{
+                              padding: 4,
+                              borderRadius: 6,
+                              background: "transparent",
+                              border: "none",
+                              color: "#64748b",
+                              cursor: "pointer",
+                              display: "flex",
+                            }}
                             title="Mark as read"
                           >
                             <Check size={14} />
@@ -201,7 +289,15 @@ export default function NotificationPanel({
                         )}
                         <button
                           onClick={() => dismiss(notification.id)}
-                          className="p-1 rounded hover:bg-white/5 text-slate-500 hover:text-red-400 cursor-pointer"
+                          style={{
+                            padding: 4,
+                            borderRadius: 6,
+                            background: "transparent",
+                            border: "none",
+                            color: "#64748b",
+                            cursor: "pointer",
+                            display: "flex",
+                          }}
                           title="Dismiss"
                         >
                           <X size={14} />
@@ -216,9 +312,9 @@ export default function NotificationPanel({
         </AnimatePresence>
 
         {filtered.length === 0 && (
-          <div className="text-center py-12">
-            <BellOff size={32} className="text-slate-600 mx-auto mb-3" />
-            <p className="text-sm text-slate-500">No notifications</p>
+          <div style={{ textAlign: "center", padding: "48px 0", gridColumn: "1 / -1" }}>
+            <BellOff size={32} style={{ color: "#475569", margin: "0 auto 12px" }} />
+            <p style={{ fontSize: 14, color: "#64748b" }}>No notifications</p>
           </div>
         )}
       </div>
@@ -230,36 +326,45 @@ export default function NotificationPanel({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/5 overflow-hidden"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.05)", overflow: "hidden" }}
           >
-            <div className="p-5 space-y-3">
-              <h4 className="text-sm font-semibold text-white mb-3">
+            <div style={{ padding: "20px 24px" }}>
+              <h4 style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 16 }}>
                 Notification Preferences
               </h4>
-              {[
-                { key: "priceAlerts", label: "Price Alerts", desc: "When a stock hits your alert price" },
-                { key: "targetHit", label: "Target Hit", desc: "When a position reaches your target" },
-                { key: "stopLoss", label: "Stop Loss Alerts", desc: "When a position nears your stop loss" },
-                { key: "aiInsights", label: "AI Insights", desc: "Portfolio recommendations from StockSage" },
-                { key: "achievements", label: "Achievements", desc: "Trading milestones and badges" },
-              ].map((pref) => (
-                <label
-                  key={pref.key}
-                  className="flex items-center justify-between py-2 cursor-pointer group"
-                >
-                  <div>
-                    <div className="text-sm text-slate-300 group-hover:text-white transition-colors">
-                      {pref.label}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
+                {[
+                  { key: "priceAlerts", label: "Price Alerts", desc: "When a stock hits your alert price" },
+                  { key: "targetHit", label: "Target Hit", desc: "When a position reaches your target" },
+                  { key: "stopLoss", label: "Stop Loss Alerts", desc: "When a position nears your stop loss" },
+                  { key: "aiInsights", label: "AI Insights", desc: "Portfolio recommendations from StockSage" },
+                  { key: "achievements", label: "Achievements", desc: "Trading milestones and badges" },
+                ].map((pref) => (
+                  <label
+                    key={pref.key}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "10px 14px",
+                      borderRadius: 12,
+                      cursor: "pointer",
+                      background: "rgba(15,23,42,0.5)",
+                      border: "1px solid #1f2937",
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontSize: 14, color: "#e2e8f0" }}>{pref.label}</div>
+                      <div style={{ fontSize: 12, color: "#475569" }}>{pref.desc}</div>
                     </div>
-                    <div className="text-xs text-slate-600">{pref.desc}</div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="w-4 h-4 accent-brand-500 cursor-pointer"
-                  />
-                </label>
-              ))}
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                      style={{ width: 18, height: 18, accentColor: "#10b981", cursor: "pointer" }}
+                    />
+                  </label>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}

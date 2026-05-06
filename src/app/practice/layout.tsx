@@ -16,7 +16,7 @@ export default function PracticeLayout({
   return (
     <>
       <Navbar />
-      <main className="pt-18 min-h-screen">{children}</main>
+      <main style={{ paddingTop: 100, minHeight: "100vh" }}>{children}</main>
       <Footer />
     </>
   );
