@@ -126,7 +126,8 @@ export default function TradeForm() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search by name or symbol..."
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30"
+                      style={{ padding: "12px 16px 12px 40px", minHeight: 44 }}
+                      className="w-full rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30"
                       autoFocus
                       id="stock-search-input"
                     />
@@ -254,7 +255,8 @@ export default function TradeForm() {
                       value={quantity}
                       onChange={(e) => setQuantity(e.target.value)}
                       placeholder="Enter number of shares"
-                      className="w-full px-4 py-3 rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30 font-mono"
+                      style={{ padding: "12px 16px", minHeight: 44 }}
+                      className="w-full rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30 font-mono"
                       min="1"
                       id="quantity-input"
                     />
@@ -279,7 +281,8 @@ export default function TradeForm() {
                         value={stopLoss}
                         onChange={(e) => setStopLoss(e.target.value)}
                         placeholder="₹ Price"
-                        className="w-full px-4 py-3 rounded-xl bg-navy-800/60 border border-white/5 text-red-400 text-sm placeholder:text-slate-600 focus:outline-none focus:border-red-500/30 font-mono"
+                        style={{ padding: "12px 16px", minHeight: 44 }}
+                        className="w-full rounded-xl bg-navy-800/60 border border-white/5 text-red-400 text-sm placeholder:text-slate-600 focus:outline-none focus:border-red-500/30 font-mono"
                         id="stop-loss-input"
                       />
                     </div>
@@ -292,7 +295,8 @@ export default function TradeForm() {
                         value={target}
                         onChange={(e) => setTarget(e.target.value)}
                         placeholder="₹ Price"
-                        className="w-full px-4 py-3 rounded-xl bg-navy-800/60 border border-white/5 text-green-400 text-sm placeholder:text-slate-600 focus:outline-none focus:border-green-500/30 font-mono"
+                        style={{ padding: "12px 16px", minHeight: 44 }}
+                        className="w-full rounded-xl bg-navy-800/60 border border-white/5 text-green-400 text-sm placeholder:text-slate-600 focus:outline-none focus:border-green-500/30 font-mono"
                         id="target-input"
                       />
                     </div>
@@ -307,7 +311,8 @@ export default function TradeForm() {
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Why are you taking this trade?"
-                      className="w-full px-4 py-3 rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30 resize-none h-20"
+                      style={{ padding: "12px 16px", minHeight: 80 }}
+                      className="w-full rounded-xl bg-navy-800/60 border border-white/5 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-brand-500/30 resize-none h-20"
                       id="trade-notes-input"
                     />
                   </div>

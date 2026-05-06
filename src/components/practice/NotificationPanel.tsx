@@ -29,32 +29,25 @@ const iconMap: Record<string, React.ElementType> = {
   ACHIEVEMENT: Trophy,
 };
 
-const severityBg: Record<string, string> = {
-  info: "rgba(59,130,246,0.08)",
-  success: "rgba(34,197,94,0.08)",
-  warning: "rgba(251,191,36,0.08)",
-  error: "rgba(239,68,68,0.08)",
-};
-
-const severityBorder: Record<string, string> = {
-  info: "rgba(59,130,246,0.2)",
-  success: "rgba(34,197,94,0.2)",
-  warning: "rgba(251,191,36,0.2)",
-  error: "rgba(239,68,68,0.2)",
-};
-
-const severityIconBg: Record<string, string> = {
-  info: "rgba(59,130,246,0.15)",
-  success: "rgba(34,197,94,0.15)",
-  warning: "rgba(251,191,36,0.15)",
-  error: "rgba(239,68,68,0.15)",
-};
-
 const severityIconColor: Record<string, string> = {
   info: "#60a5fa",
   success: "#34d399",
   warning: "#fbbf24",
   error: "#f87171",
+};
+
+const severityBgGlow: Record<string, string> = {
+  info: "radial-gradient(circle at top left, rgba(59,130,246,0.15), transparent 70%)",
+  success: "radial-gradient(circle at top left, rgba(16,185,129,0.15), transparent 70%)",
+  warning: "radial-gradient(circle at top left, rgba(251,191,36,0.15), transparent 70%)",
+  error: "radial-gradient(circle at top left, rgba(239,68,68,0.15), transparent 70%)",
+};
+
+const severityLeftBorder: Record<string, string> = {
+  info: "#3b82f6",
+  success: "#10b981",
+  warning: "#f59e0b",
+  error: "#ef4444",
 };
 
 function timeAgo(dateStr: string): string {
@@ -96,13 +89,17 @@ export default function NotificationPanel({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
       style={{
         borderRadius: 20,
         overflow: "hidden",
         background: "rgba(15,23,42,0.6)",
         border: "1px solid #1f2937",
         backdropFilter: "blur(12px)",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 480,
       }}
     >
       {/* Header */}
@@ -110,36 +107,26 @@ export default function NotificationPanel({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "20px 24px",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
+        padding: "24px 28px 16px",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ position: "relative" }}>
             <Bell size={22} style={{ color: "#34d399" }} />
             {unreadCount > 0 && (
               <div style={{
                 position: "absolute",
-                top: -6,
-                right: -6,
-                width: 18,
-                height: 18,
+                top: -4,
+                right: -4,
+                width: 14,
+                height: 14,
                 background: "#ef4444",
                 borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#fff" }}>
-                  {unreadCount}
-                </span>
-              </div>
+                boxShadow: "0 0 10px rgba(239,68,68,0.6)",
+              }} />
             )}
           </div>
           <div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Notifications</h3>
-            <p style={{ fontSize: 13, color: "#64748b" }}>
-              {unreadCount} unread alert{unreadCount !== 1 ? "s" : ""}
-            </p>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -155,7 +142,9 @@ export default function NotificationPanel({
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
+                transition: "all 0.2s",
               }}
+              className="hover:text-white hover:bg-white/5"
               title="Mark all as read"
             >
               <CheckCheck size={18} />
@@ -166,13 +155,15 @@ export default function NotificationPanel({
             style={{
               padding: 8,
               borderRadius: 10,
-              background: "transparent",
+              background: settingsOpen ? "rgba(255,255,255,0.1)" : "transparent",
               border: "none",
-              color: "#94a3b8",
+              color: settingsOpen ? "#fff" : "#94a3b8",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
+              transition: "all 0.2s",
             }}
+            className="hover:text-white hover:bg-white/5"
             title="Notification settings"
           >
             <Settings size={18} />
@@ -181,142 +172,41 @@ export default function NotificationPanel({
       </div>
 
       {/* Filter Tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 24px 8px" }}>
+      <div style={{ padding: "0 28px 16px", display: "flex", gap: 20, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
         {(["ALL", "UNREAD"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             style={{
-              padding: "6px 14px",
+              position: "relative",
+              padding: "0 4px 12px",
               fontSize: 13,
               fontWeight: 600,
-              borderRadius: 8,
+              background: "transparent",
               border: "none",
               cursor: "pointer",
-              transition: "all 0.15s",
-              background: filter === f ? "rgba(16,185,129,0.15)" : "transparent",
-              color: filter === f ? "#34d399" : "#94a3b8",
+              color: filter === f ? "#34d399" : "#64748b",
+              transition: "color 0.2s",
             }}
           >
             {f === "ALL" ? "All" : `Unread (${unreadCount})`}
+            {filter === f && (
+              <motion.div
+                layoutId="activeFilter"
+                style={{
+                  position: "absolute",
+                  bottom: -1,
+                  left: 0,
+                  right: 0,
+                  height: 2,
+                  background: "#34d399",
+                  borderRadius: "2px 2px 0 0",
+                  boxShadow: "0 -2px 10px rgba(52,211,153,0.5)",
+                }}
+              />
+            )}
           </button>
         ))}
-      </div>
-
-      {/* Notification Grid — horizontal card layout */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
-        gap: 12,
-        padding: "12px 20px 20px",
-        maxHeight: 480,
-        overflowY: "auto",
-      }}>
-        <AnimatePresence mode="popLayout">
-          {filtered.map((notification) => {
-            const Icon = iconMap[notification.type] || Info;
-            return (
-              <motion.div
-                key={notification.id}
-                layout
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20, height: 0 }}
-                style={{
-                  position: "relative",
-                  borderRadius: 16,
-                  padding: "16px 20px",
-                  background: severityBg[notification.severity],
-                  border: `1px solid ${severityBorder[notification.severity]}`,
-                  opacity: notification.read ? 0.6 : 1,
-                  transition: "all 0.2s",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 12,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      background: severityIconBg[notification.severity],
-                    }}
-                  >
-                    <Icon size={20} style={{ color: severityIconColor[notification.severity] }} />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                      <h4 style={{
-                        fontSize: 14,
-                        fontWeight: 700,
-                        color: notification.read ? "#94a3b8" : "#fff",
-                      }}>
-                        {notification.title}
-                      </h4>
-                      <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-                        {!notification.read && (
-                          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#34d399" }} />
-                        )}
-                      </div>
-                    </div>
-                    <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.5, marginTop: 4 }}>
-                      {notification.message}
-                    </p>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
-                      <span style={{ fontSize: 11, color: "#475569" }}>
-                        {timeAgo(notification.timestamp)}
-                      </span>
-                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                        {!notification.read && (
-                          <button
-                            onClick={() => markRead(notification.id)}
-                            style={{
-                              padding: 4,
-                              borderRadius: 6,
-                              background: "transparent",
-                              border: "none",
-                              color: "#64748b",
-                              cursor: "pointer",
-                              display: "flex",
-                            }}
-                            title="Mark as read"
-                          >
-                            <Check size={14} />
-                          </button>
-                        )}
-                        <button
-                          onClick={() => dismiss(notification.id)}
-                          style={{
-                            padding: 4,
-                            borderRadius: 6,
-                            background: "transparent",
-                            border: "none",
-                            color: "#64748b",
-                            cursor: "pointer",
-                            display: "flex",
-                          }}
-                          title="Dismiss"
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-
-        {filtered.length === 0 && (
-          <div style={{ textAlign: "center", padding: "48px 0", gridColumn: "1 / -1" }}>
-            <BellOff size={32} style={{ color: "#475569", margin: "0 auto 12px" }} />
-            <p style={{ fontSize: 14, color: "#64748b" }}>No notifications</p>
-          </div>
-        )}
       </div>
 
       {/* Settings Panel */}
@@ -326,42 +216,31 @@ export default function NotificationPanel({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            style={{ borderTop: "1px solid rgba(255,255,255,0.05)", overflow: "hidden" }}
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", overflow: "hidden", background: "rgba(0,0,0,0.2)" }}
           >
-            <div style={{ padding: "20px 24px" }}>
-              <h4 style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 16 }}>
-                Notification Preferences
-              </h4>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
+            <div style={{ padding: "20px 28px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 {[
-                  { key: "priceAlerts", label: "Price Alerts", desc: "When a stock hits your alert price" },
-                  { key: "targetHit", label: "Target Hit", desc: "When a position reaches your target" },
-                  { key: "stopLoss", label: "Stop Loss Alerts", desc: "When a position nears your stop loss" },
-                  { key: "aiInsights", label: "AI Insights", desc: "Portfolio recommendations from StockSage" },
-                  { key: "achievements", label: "Achievements", desc: "Trading milestones and badges" },
+                  { key: "priceAlerts", label: "Price Alerts" },
+                  { key: "targetHit", label: "Target Hit" },
+                  { key: "stopLoss", label: "Stop Loss" },
+                  { key: "aiInsights", label: "AI Insights" },
                 ].map((pref) => (
                   <label
                     key={pref.key}
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "10px 14px",
-                      borderRadius: 12,
+                      gap: 10,
                       cursor: "pointer",
-                      background: "rgba(15,23,42,0.5)",
-                      border: "1px solid #1f2937",
                     }}
                   >
-                    <div>
-                      <div style={{ fontSize: 14, color: "#e2e8f0" }}>{pref.label}</div>
-                      <div style={{ fontSize: 12, color: "#475569" }}>{pref.desc}</div>
-                    </div>
                     <input
                       type="checkbox"
                       defaultChecked
-                      style={{ width: 18, height: 18, accentColor: "#10b981", cursor: "pointer" }}
+                      style={{ width: 16, height: 16, accentColor: "#10b981", cursor: "pointer" }}
                     />
+                    <span style={{ fontSize: 13, color: "#cbd5e1", fontWeight: 500 }}>{pref.label}</span>
                   </label>
                 ))}
               </div>
@@ -369,6 +248,155 @@ export default function NotificationPanel({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Notification List */}
+      <div style={{
+        flex: 1,
+        overflowY: "auto",
+        padding: "8px 12px 12px",
+      }}>
+        <AnimatePresence initial={false}>
+          {filtered.map((notification) => {
+            const Icon = iconMap[notification.type] || Info;
+            return (
+              <motion.div
+                key={notification.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95, height: 0, margin: 0 }}
+                style={{
+                  position: "relative",
+                  margin: "8px",
+                  borderRadius: 14,
+                  padding: "16px 20px",
+                  background: notification.read ? "transparent" : severityBgGlow[notification.severity],
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  opacity: notification.read ? 0.6 : 1,
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 16,
+                  overflow: "hidden",
+                }}
+                className="hover:!bg-white/5 transition-all group"
+              >
+                {/* Left accent border for unread */}
+                {!notification.read && (
+                  <div style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 16,
+                    bottom: 16,
+                    width: 3,
+                    borderRadius: "0 4px 4px 0",
+                    background: severityLeftBorder[notification.severity],
+                    boxShadow: `0 0 10px ${severityLeftBorder[notification.severity]}`,
+                  }} />
+                )}
+
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 10,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    background: "rgba(15,23,42,0.8)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <Icon size={18} style={{ color: severityIconColor[notification.severity] }} />
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0, paddingTop: 2 }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                    <h4 style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: notification.read ? "#94a3b8" : "#fff",
+                      marginBottom: 4,
+                      lineHeight: 1.4,
+                    }}>
+                      {notification.title}
+                    </h4>
+                    <span style={{ fontSize: 11, color: "#64748b", whiteSpace: "nowrap", flexShrink: 0, marginTop: 2 }}>
+                      {timeAgo(notification.timestamp)}
+                    </span>
+                  </div>
+                  
+                  <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.5, marginBottom: 12 }}>
+                    {notification.message}
+                  </p>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, opacity: 0 }} className="group-hover:!opacity-100 transition-opacity">
+                    {!notification.read && (
+                      <button
+                        onClick={() => markRead(notification.id)}
+                        style={{
+                          padding: "6px 12px",
+                          borderRadius: 6,
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          color: "#cbd5e1",
+                          fontSize: 11,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                        className="hover:!bg-white/10 hover:!text-white transition-all"
+                      >
+                        <Check size={12} /> Mark read
+                      </button>
+                    )}
+                    <button
+                      onClick={() => dismiss(notification.id)}
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: 6,
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        color: "#cbd5e1",
+                        fontSize: 11,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                      className="hover:!bg-white/10 hover:!text-white transition-all"
+                    >
+                      <X size={12} /> Dismiss
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+
+        {filtered.length === 0 && (
+          <div style={{ textAlign: "center", padding: "64px 20px" }}>
+            <div style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.03)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 16px",
+            }}>
+              <BellOff size={28} style={{ color: "#475569" }} />
+            </div>
+            <h4 style={{ fontSize: 16, fontWeight: 600, color: "#fff", marginBottom: 6 }}>All caught up!</h4>
+            <p style={{ fontSize: 13, color: "#64748b" }}>You have no new notifications.</p>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 }

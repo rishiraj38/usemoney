@@ -83,14 +83,21 @@ export default function PracticePage() {
           <StatsGrid stats={mockPortfolioStats} />
         </div>
 
-        {/* ─── Performance Chart (full width) ─── */}
-        <div style={{ marginBottom: 32 }}>
-          <PerformanceChart data={mockPerformanceData} />
-        </div>
-
-        {/* ─── Notifications (full width) ─── */}
-        <div style={{ marginBottom: 48 }}>
-          <NotificationPanel notifications={mockNotifications} />
+        {/* ─── Chart + Notifications (Grid) ─── */}
+        <div
+          style={{
+            display: "grid",
+            gap: 28,
+            marginBottom: 48,
+          }}
+          className="grid-cols-1 lg:!grid-cols-[3fr_2fr]"
+        >
+          <div style={{ height: "100%", minHeight: 480 }}>
+            <PerformanceChart data={mockPerformanceData} />
+          </div>
+          <div style={{ height: "100%" }}>
+            <NotificationPanel notifications={mockNotifications} />
+          </div>
         </div>
 
         {/* ─── Trades Table ─── */}
